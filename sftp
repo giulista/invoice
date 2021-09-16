@@ -3,14 +3,14 @@
  * Generuje ID FTP pripojeni na zaklade zadane URL
  * sftp://vpce-046495cc56082a589-lz97psnp.vpce-svc-008265cdf7d3b3dd9.eu-central-1.vpce.amazonaws.com
  */
-function getFtpConnection($uri) 
+function getsFtpConnection($uri) 
 {  
-	preg_match("/(?P<protocol>ftps?:\/\/)(?P<username>.*?):(?P<password>.*?)@(?P<url>.*?):?(?P<port>[1-9]+)?(?<dir>\/.*)/i", $uri, $match);
+	preg_match("/(?P<protocol>sftps?:\/\/)(?P<username>.*?):(?P<password>.*?)@(?P<url>.*?):?(?P<port>[1-9]+)?(?<dir>\/.*)/i", $uri, $match);
 	
-    $conn = ftp_connect($match['url'], empty($match['port']) ? 21 : (int)$match['port']) or die("Couldn't connect to " . $match['url']);
-    if (ftp_login($conn, $match['username'], $match['password'])) 
+    $conn = sftp_connect($match['url'], empty($match['port']) ? 21 : (int)$match['port']) or die("Couldn't connect to " . $match['url']);
+    if (sftp_login($conn, $match['username'], $match['password'])) 
     { 
-        ftp_chdir($conn, $match['dir']); 
+        sftp_chdir($conn, $match['dir']); 
         return $conn; 
     } 
 
